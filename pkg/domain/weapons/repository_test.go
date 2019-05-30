@@ -1,7 +1,7 @@
 package weapons
 
 import (
-	"fpetkovski/monkeyisland/infrastructure/connection"
+	"fpetkovski/monkeyisland/pkg/infrastructure/connection"
 	"github.com/jinzhu/gorm"
 	"github.com/stretchr/testify/assert"
 	"testing"
@@ -9,7 +9,7 @@ import (
 
 var dbConnection *gorm.DB
 func setupTestcase()  {
-	dbConnection = connection.MakeDefaultConnection()
+	dbConnection = connection.MakeTestConnection()
 	dbConnection = dbConnection.Begin()
 }
 

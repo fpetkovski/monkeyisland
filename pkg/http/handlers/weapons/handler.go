@@ -2,7 +2,7 @@ package weapons
 
 import (
 	"encoding/json"
-	"fpetkovski/monkeyisland/domain/weapons"
+	"fpetkovski/monkeyisland/pkg/domain/weapons"
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
 	"net/http"

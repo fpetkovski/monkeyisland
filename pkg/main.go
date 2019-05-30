@@ -1,9 +1,9 @@
 package main
 
 import (
-	"fpetkovski/monkeyisland/http/handlers/weapons"
-	"fpetkovski/monkeyisland/http/middleware"
-	"fpetkovski/monkeyisland/infrastructure/connection"
+	"fpetkovski/monkeyisland/pkg/http/handlers/weapons"
+	"fpetkovski/monkeyisland/pkg/http/middleware"
+	"fpetkovski/monkeyisland/pkg/infrastructure/connection"
 	"github.com/gorilla/mux"
 	httplib "net/http"
 )

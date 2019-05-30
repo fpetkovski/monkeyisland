@@ -1,6 +1,6 @@
 package weapons
 
-import "fpetkovski/monkeyisland/domain"
+import "fpetkovski/monkeyisland/pkg/domain"
 
 type Weapon struct {
 	domain.Toy

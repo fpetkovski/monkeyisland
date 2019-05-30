@@ -19,6 +19,17 @@ func MakeDefaultConnection() *gorm.DB {
 	)
 }
 
+// Instantiates a connection using the database parameters passed in the environment
+func MakeTestConnection() *gorm.DB {
+	return makeConnection(
+		os.Getenv("TEST_DB_HOST"),
+		os.Getenv("TEST_DB_PORT"),
+		os.Getenv("TEST_DB_USER"),
+		os.Getenv("TEST_DB_PASS"),
+		os.Getenv("TEST_DB_NAME"),
+	)
+}
+
 // Instantiates a connection using using the given parameters
 func makeConnection(host string, port string, username string, password string, database string) *gorm.DB {
 	connectionString := fmt.Sprintf(
