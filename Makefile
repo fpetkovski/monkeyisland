@@ -12,3 +12,6 @@ test: up
 
 migrate:
 	docker exec app go run cmd/migrations/migrate_db.go
+
+start:
+	docker exec app go run ./pkg/main.go
