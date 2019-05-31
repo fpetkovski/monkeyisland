@@ -111,7 +111,7 @@ paths:
           schema:
             type: integer
           required: true
-          description: ID of the dog to update
+          description: ID of the dog to delete
       responses:
         '200':
           description: Success
@@ -195,7 +195,7 @@ paths:
           schema:
             type: integer
           required: true
-          description: ID of the monkey to update
+          description: ID of the monkey to delete
       responses:
         '200':
           description: Success
@@ -279,7 +279,7 @@ paths:
           schema:
             type: integer
           required: true
-          description: ID of the weapon to update
+          description: ID of the weapon to delete
       responses:
         '200':
           description: Success
