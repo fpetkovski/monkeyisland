@@ -3,10 +3,6 @@ services:
   web:
     container_name: app
     image: golang:1.11
-#    build:
-#      context: ../
-#      dockerfile: $PWD/build/Dockerfile
-#      target: source
     entrypoint: tail
     command:
       - -f
@@ -31,9 +27,6 @@ services:
 
   docs:
     image: swaggerapi/swagger-ui
-#    build:
-#      context: ../docs
-#      dockerfile: $PWD/docs/Dockerfile
     ports:
       - 8082:8080
     environment:
