@@ -2,6 +2,7 @@ package main
 
 import (
 	"fpetkovski/monkeyisland/pkg/http/handlers/dogs"
+	"fpetkovski/monkeyisland/pkg/http/handlers/ghosts"
 	"fpetkovski/monkeyisland/pkg/http/handlers/monkeys"
 	"fpetkovski/monkeyisland/pkg/http/handlers/weapons"
 	"fpetkovski/monkeyisland/pkg/http/middleware"
@@ -41,6 +42,9 @@ func main() {
 	apiRouter.HandleFunc("/monkeys", monkeysValidator(monkeysHandler.CreateMonkey)).Methods("POST")
 	apiRouter.HandleFunc("/monkeys/{id:[0-9]+}", monkeysValidator(monkeysHandler.UpdateMonkey)).Methods("PUT")
 	apiRouter.HandleFunc("/monkeys/{id:[0-9]+}", monkeysHandler.DeleteMonkey).Methods("DELETE")
+
+	ghostsHandler := ghosts.NewGhostsHandler()
+	apiRouter.HandleFunc("/ghosts", ghostsHandler.GetGhosts).Methods("GET")
 
 	err := httplib.ListenAndServe(":80", r)
 	if err != nil {
