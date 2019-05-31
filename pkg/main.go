@@ -8,12 +8,9 @@ import (
 	"fpetkovski/monkeyisland/pkg/http/middleware"
 	"fpetkovski/monkeyisland/pkg/infrastructure/connection"
 	"github.com/gorilla/mux"
+	"github.com/jinzhu/gorm"
 	"github.com/rs/cors"
 	httplib "net/http"
-)
-
-const (
-	DOCS_DIR = "/docs/"
 )
 
 func main() {
@@ -21,9 +18,6 @@ func main() {
 	defer dbConnection.Close()
 
 	router := mux.NewRouter()
-	router.
-		PathPrefix(DOCS_DIR).
-		Handler(httplib.StripPrefix(DOCS_DIR, httplib.FileServer(httplib.Dir("."+DOCS_DIR))))
 
 	apiRouter := router.PathPrefix("/api").Subrouter()
 	apiRouter.Use(
@@ -31,39 +25,54 @@ func main() {
 		middleware.PanicRecovery,
 	)
 
-	weaponValidator := middleware.MakeValidator(weapons.ValidationRules())
-	weaponsHandler := weapons.NewWeaponsHandler(dbConnection)
-	apiRouter.HandleFunc("/weapons", weaponsHandler.GetWeapons).Methods("GET")
-	apiRouter.HandleFunc("/weapons", weaponValidator(weaponsHandler.CreateWeapon)).Methods("POST")
-	apiRouter.HandleFunc("/weapons/{id:[0-9]+}", weaponValidator(weaponsHandler.UpdateWeapon)).Methods("PUT")
-	apiRouter.HandleFunc("/weapons/{id:[0-9]+}", weaponsHandler.DeleteWeapon).Methods("DELETE")
+	attachWeaponRoutes(dbConnection, apiRouter)
+	attachDogRoutes(dbConnection, apiRouter)
+	attachMonkeyRoutes(dbConnection, apiRouter)
+	attachGhostRoutes(apiRouter)
 
-	dogsValidator := middleware.MakeValidator(dogs.ValidationRules())
-	dogsHandler := dogs.NewDogsHandler(dbConnection)
-	apiRouter.HandleFunc("/dogs", dogsHandler.GetDogs).Methods("GET")
-	apiRouter.HandleFunc("/dogs", dogsValidator(dogsHandler.CreateDog)).Methods("POST")
-	apiRouter.HandleFunc("/dogs/{id:[0-9]+}", dogsValidator(dogsHandler.UpdateDog)).Methods("PUT")
-	apiRouter.HandleFunc("/dogs/{id:[0-9]+}", dogsHandler.DeleteDog).Methods("DELETE")
+	c := makeCORSHandler()
+	err := httplib.ListenAndServe(":80", c.Handler(router))
+	if err != nil {
+		panic(err)
+	}
+}
 
+func makeCORSHandler() *cors.Cors {
+	return cors.New(cors.Options{
+		AllowedOrigins:   []string{"http://localhost:8082"},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowCredentials: true,
+	})
+}
+
+func attachGhostRoutes(apiRouter *mux.Router) {
+	ghostsHandler := ghosts.NewGhostsHandler()
+	apiRouter.HandleFunc("/ghosts", ghostsHandler.GetGhosts).Methods("GET")
+}
+
+func attachMonkeyRoutes(dbConnection *gorm.DB, apiRouter *mux.Router) {
 	monkeysValidator := middleware.MakeValidator(monkeys.ValidationRules())
 	monkeysHandler := monkeys.NewMonkeysHandler(dbConnection)
 	apiRouter.HandleFunc("/monkeys", monkeysHandler.GetMonkeys).Methods("GET")
 	apiRouter.HandleFunc("/monkeys", monkeysValidator(monkeysHandler.CreateMonkey)).Methods("POST")
 	apiRouter.HandleFunc("/monkeys/{id:[0-9]+}", monkeysValidator(monkeysHandler.UpdateMonkey)).Methods("PUT")
 	apiRouter.HandleFunc("/monkeys/{id:[0-9]+}", monkeysHandler.DeleteMonkey).Methods("DELETE")
+}
 
-	ghostsHandler := ghosts.NewGhostsHandler()
-	apiRouter.HandleFunc("/ghosts", ghostsHandler.GetGhosts).Methods("GET")
+func attachDogRoutes(dbConnection *gorm.DB, apiRouter *mux.Router) {
+	dogsValidator := middleware.MakeValidator(dogs.ValidationRules())
+	dogsHandler := dogs.NewDogsHandler(dbConnection)
+	apiRouter.HandleFunc("/dogs", dogsHandler.GetDogs).Methods("GET")
+	apiRouter.HandleFunc("/dogs", dogsValidator(dogsHandler.CreateDog)).Methods("POST")
+	apiRouter.HandleFunc("/dogs/{id:[0-9]+}", dogsValidator(dogsHandler.UpdateDog)).Methods("PUT")
+	apiRouter.HandleFunc("/dogs/{id:[0-9]+}", dogsHandler.DeleteDog).Methods("DELETE")
+}
 
-	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{"http://localhost:8082"},
-		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
-		AllowCredentials: true,
-	})
-	handler := c.Handler(router)
-
-	err := httplib.ListenAndServe(":80", handler)
-	if err != nil {
-		panic(err)
-	}
+func attachWeaponRoutes(dbConnection *gorm.DB, apiRouter *mux.Router) {
+	weaponValidator := middleware.MakeValidator(weapons.ValidationRules())
+	weaponsHandler := weapons.NewWeaponsHandler(dbConnection)
+	apiRouter.HandleFunc("/weapons", weaponsHandler.GetWeapons).Methods("GET")
+	apiRouter.HandleFunc("/weapons", weaponValidator(weaponsHandler.CreateWeapon)).Methods("POST")
+	apiRouter.HandleFunc("/weapons/{id:[0-9]+}", weaponValidator(weaponsHandler.UpdateWeapon)).Methods("PUT")
+	apiRouter.HandleFunc("/weapons/{id:[0-9]+}", weaponsHandler.DeleteWeapon).Methods("DELETE")
 }
