@@ -6,13 +6,13 @@ type Dog struct {
 	CuddlyToy
 }
 
-func NewDog(name string, powerLevel int) *Dog {
+func NewDog(name string, energyLevel int) *Dog {
 	return &Dog{
 		CuddlyToy: CuddlyToy{
 			Toy: domain.Toy{
 				Name:name,
 			},
-			EnergyLevel: powerLevel,
+			EnergyLevel: energyLevel,
 		},
 	}
 }

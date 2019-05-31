@@ -8,15 +8,24 @@ import (
 	"fpetkovski/monkeyisland/pkg/http/middleware"
 	"fpetkovski/monkeyisland/pkg/infrastructure/connection"
 	"github.com/gorilla/mux"
+	"github.com/rs/cors"
 	httplib "net/http"
+)
+
+const (
+	DOCS_DIR = "/docs/"
 )
 
 func main() {
 	dbConnection := connection.MakeDefaultConnection()
 	defer dbConnection.Close()
 
-	r := mux.NewRouter()
-	apiRouter := r.PathPrefix("/api").Subrouter()
+	router := mux.NewRouter()
+	router.
+		PathPrefix(DOCS_DIR).
+		Handler(httplib.StripPrefix(DOCS_DIR, httplib.FileServer(httplib.Dir("."+DOCS_DIR))))
+
+	apiRouter := router.PathPrefix("/api").Subrouter()
 	apiRouter.Use(
 		middleware.JsonResponse,
 		middleware.PanicRecovery,
@@ -46,7 +55,14 @@ func main() {
 	ghostsHandler := ghosts.NewGhostsHandler()
 	apiRouter.HandleFunc("/ghosts", ghostsHandler.GetGhosts).Methods("GET")
 
-	err := httplib.ListenAndServe(":80", r)
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"http://localhost:8082"},
+		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+		AllowCredentials: true,
+	})
+	handler := c.Handler(router)
+
+	err := httplib.ListenAndServe(":80", handler)
 	if err != nil {
 		panic(err)
 	}

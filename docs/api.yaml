@@ -1,24 +1,316 @@
 openapi: 3.0.0
 info:
-  title: Sample API
-  description: Optional multiline or single-line description in [CommonMark](http://commonmark.org/help/) or HTML.
+  title: Monkey Island API
   version: 0.1.9
 servers:
-  - url: http://api.example.com/v1
-    description: Optional server description, e.g. Main (production) server
-  - url: http://staging-api.example.com
-    description: Optional server description, e.g. Internal staging server for testing
+  - url: http://localhost:8080/api
+    description: Dev server
 paths:
-  /users:
+  /dogs:
     get:
-      summary: Returns a list of users.
-      description: Optional extended description in CommonMark or HTML.
+      summary: Returns a list of dogs
       responses:
         '200':    # status code
-          description: A JSON array of user names
+          description: A JSON array of dogs
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: string
+                $ref: '#/components/Dog'
+    post:
+      summary: Creates a new dog
+      requestBody:
+        description: Dog payload
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DogPayload'
+      responses:
+        '201':
+          description: The created dog
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Dog'
+        '422':
+          description: Invalid payload
+
+  /dogs/{id}:
+    put:
+      summary: Updates an existing dog
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID of the dog to update
+
+      requestBody:
+        description: Dog payload
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/DogPayload'
+
+      responses:
+        '200':
+          description: The updated dog
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DogPayload'
+        '404':
+          description: Dog not found
+
+        '422':
+          description: Invalid payload
+
+    delete:
+      summary: Deletes an existing dog
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID of the dog to update
+      responses:
+        '200':
+          description: Success
+        '404':
+          description: Dog not found
+          
+  /monkeys:
+    get:
+      summary: Returns a list of monkeys
+      responses:
+        '200':    # status code
+          description: A JSON array of monkeys
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/Monkey'
+    post:
+      summary: Creates a new monkey
+      requestBody:
+        description: Monkey payload
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MonkeyPayload'
+      responses:
+        '201':
+          description: The created monkey
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Monkey'
+        '422':
+          description: Invalid payload
+
+  /monkeys/{id}:
+    put:
+      summary: Updates an existing monkey
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID of the monkey to update
+
+      requestBody:
+        description: Monkey payload
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MonkeyPayload'
+
+      responses:
+        '200':
+          description: The updated monkey
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MonkeyPayload'
+        '404':
+          description: Monkey not found
+
+        '422':
+          description: Invalid payload
+
+    delete:
+      summary: Deletes an existing monkey
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID of the monkey to update
+      responses:
+        '200':
+          description: Success
+        '404':
+          description: Monkey not found
+          
+  /weapons:
+    get:
+      summary: Returns a list of weapons
+      responses:
+        '200':    # status code
+          description: A JSON array of weapons
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/Weapon'
+    post:
+      summary: Creates a new weapon
+      requestBody:
+        description: Weapon payload
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WeaponPayload'
+      responses:
+        '201':
+          description: The created weapon
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Weapon'
+        '422':
+          description: Invalid payload
+
+  /weapons/{id}:
+    put:
+      summary: Updates an existing weapon
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID of the weapon to update
+
+      requestBody:
+        description: Weapon payload
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/WeaponPayload'
+
+      responses:
+        '200':
+          description: The updated weapon
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/WeaponPayload'
+        '404':
+          description: Weapon not found
+
+        '422':
+          description: Invalid payload
+
+    delete:
+      summary: Deletes an existing weapon
+      parameters:
+        - in: path
+          name: id
+          schema:
+            type: integer
+          required: true
+          description: ID of the weapon to update
+      responses:
+        '200':
+          description: Success
+        '404':
+          description: Weapon not found
+
+  /ghosts:
+    get:
+      summary: Returns a list of ghosts
+      responses:
+        '200':    # status code
+          description: A JSON array of ghosts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/Weapon'
+
+components:
+  schemas:
+    Dog:
+      type: object
+      properties:
+        ID:
+          type: integer
+        name:
+          type: string
+        energy_level:
+          type: integer
+    DogPayload:
+      type: object
+      properties:
+        name:
+          type: string
+        energy_level:
+          type: integer
+      example:
+        name: Jerry
+        energy_level: 90
+        
+    Monkey:
+      type: object
+      properties:
+        ID:
+          type: integer
+        name:
+          type: string
+        energy_level:
+          type: integer
+    MonkeyPayload:
+      type: object
+      properties:
+        name:
+          type: string
+        energy_level:
+          type: integer
+      example:
+        name: Jerry
+        energy_level: 90
+
+    Weapon:
+      type: object
+      properties:
+        ID:
+          type: integer
+        name:
+          type: string
+        power_level:
+          type: integer
+    WeaponPayload:
+      type: object
+      properties:
+        name:
+          type: string
+        power_level:
+          type: integer
+      example:
+        name: Machine gun
+        power_level: 90
+
+    Ghost:
+      type: object
+      properties:
+        ID:
+          type: integer
+        name:
+          type: string

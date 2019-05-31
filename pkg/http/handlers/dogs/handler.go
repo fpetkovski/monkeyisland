@@ -33,12 +33,12 @@ func (handler Handler) CreateDog(w http.ResponseWriter, r *http.Request) {
 	dog := cuddly_toys.NewDog(payload.Name, payload.EnergyLevel)
 	handler.repository.Create(dog)
 
+	w.WriteHeader(http.StatusCreated)
 	err := json.NewEncoder(w).Encode(dog)
 	if err != nil {
 		panic(err)
 	}
 
-	w.WriteHeader(http.StatusCreated)
 }
 
 func (handler Handler) UpdateDog(w http.ResponseWriter, r *http.Request) {

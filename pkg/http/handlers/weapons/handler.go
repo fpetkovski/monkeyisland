@@ -33,12 +33,12 @@ func (handler Handler) CreateWeapon(w http.ResponseWriter, r *http.Request) {
 	weapon := weapons.NewWeapon(payload.Name, payload.PowerLevel)
 	handler.repository.Create(weapon)
 
+	w.WriteHeader(http.StatusCreated)
 	err := json.NewEncoder(w).Encode(weapon)
 	if err != nil {
 		panic(err)
 	}
 
-	w.WriteHeader(http.StatusCreated)
 }
 
 func (handler Handler) UpdateWeapon(w http.ResponseWriter, r *http.Request) {

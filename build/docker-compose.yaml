@@ -2,16 +2,18 @@ version: "3.4"
 services:
   web:
     container_name: app
-    build:
-      context: ../
-      dockerfile: $PWD/build/Dockerfile
-      target: source
+    image: golang:1.11
+#    build:
+#      context: ../
+#      dockerfile: $PWD/build/Dockerfile
+#      target: source
     entrypoint: tail
     command:
       - -f
       - /dev/null
     volumes:
       - ../:/code
+    working_dir: /code
     environment:
       GOFLAGS: -mod=vendor
       DB_HOST: mysql
@@ -28,13 +30,16 @@ services:
       - 8080:80
 
   docs:
-    build:
-      context: ../docs
-      dockerfile: $PWD/docs/Dockerfile
+    image: swaggerapi/swagger-ui
+#    build:
+#      context: ../docs
+#      dockerfile: $PWD/docs/Dockerfile
     ports:
       - 8082:8080
     environment:
-      SWAGGER_JSON: /tmp/api.yaml
+      SWAGGER_JSON: /docs/api.yaml
+    volumes:
+      - ../docs:/docs
 
   mysql:
     image: mysql:5.7

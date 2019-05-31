@@ -25,6 +25,7 @@ func MakeValidator(rules govalidator.MapData) func(next http.HandlerFunc) http.H
 			}
 			v := govalidator.New(opts)
 			e := v.ValidateJSON()
+
 			if len(e) != 0 {
 				w.WriteHeader(http.StatusUnprocessableEntity)
 				sendErrors(e, w)
@@ -39,6 +40,7 @@ func MakeValidator(rules govalidator.MapData) func(next http.HandlerFunc) http.H
 
 func sendErrors(errors url.Values, w http.ResponseWriter) {
 	response := map[string]interface{}{"error": errors}
+	w.WriteHeader(http.StatusUnprocessableEntity)
 	err := json.NewEncoder(w).Encode(response)
 	if err != nil {
 		panic(err)

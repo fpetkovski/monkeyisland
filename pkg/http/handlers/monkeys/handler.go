@@ -33,12 +33,12 @@ func (handler Handler) CreateMonkey(w http.ResponseWriter, r *http.Request) {
 	monkey := cuddly_toys.NewMonkey(payload.Name, payload.EnergyLevel)
 	handler.repository.Create(monkey)
 
+	w.WriteHeader(http.StatusCreated)
 	err := json.NewEncoder(w).Encode(monkey)
 	if err != nil {
 		panic(err)
 	}
 
-	w.WriteHeader(http.StatusCreated)
 }
 
 func (handler Handler) UpdateMonkey(w http.ResponseWriter, r *http.Request) {
