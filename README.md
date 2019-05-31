@@ -12,6 +12,9 @@ Execute the following commands:
 ### Tests
 * `make test` runs tests against a different database
 
+### Tear down
+* `make down` to tear down the environment
+
 ### Notable libraries used
 * gorilla/mux
 * gorm
