@@ -5,12 +5,26 @@ info:
 servers:
   - url: http://localhost:8080/api
     description: Dev server
+tags:
+  - name: Dogs
+    description: everything about dogs
+
+  - name: Monkeys
+    description: monkey endpoints
+
+  - name: Ghosts
+    description: spooky
+
+  - name: Weapons
+    description: weapon endpoints
 paths:
   /dogs:
     get:
       summary: Returns a list of dogs
+      tags:
+        - Dogs
       responses:
-        '200':    # status code
+        '200':    
           description: A JSON array of dogs
           content:
             application/json:
@@ -18,6 +32,8 @@ paths:
                 $ref: '#/components/schemas/Dog'
     post:
       summary: Creates a new dog
+      tags:
+        - Dogs
       requestBody:
         description: Dog payload
         required: true
@@ -38,6 +54,8 @@ paths:
   /dogs/{id}:
     put:
       summary: Updates an existing dog
+      tags:
+        - Dogs
       parameters:
         - in: path
           name: id
@@ -69,6 +87,8 @@ paths:
 
     delete:
       summary: Deletes an existing dog
+      tags:
+        - Dogs
       parameters:
         - in: path
           name: id
@@ -85,8 +105,10 @@ paths:
   /monkeys:
     get:
       summary: Returns a list of monkeys
+      tags:
+        - Monkeys
       responses:
-        '200':    # status code
+        '200':    
           description: A JSON array of monkeys
           content:
             application/json:
@@ -94,6 +116,8 @@ paths:
                 $ref: '#/components/schemas/Monkey'
     post:
       summary: Creates a new monkey
+      tags:
+        - Monkeys
       requestBody:
         description: Monkey payload
         required: true
@@ -114,6 +138,8 @@ paths:
   /monkeys/{id}:
     put:
       summary: Updates an existing monkey
+      tags:
+        - Monkeys
       parameters:
         - in: path
           name: id
@@ -145,6 +171,8 @@ paths:
 
     delete:
       summary: Deletes an existing monkey
+      tags:
+        - Monkeys
       parameters:
         - in: path
           name: id
@@ -161,8 +189,10 @@ paths:
   /weapons:
     get:
       summary: Returns a list of weapons
+      tags:
+        - Weapons
       responses:
-        '200':    # status code
+        '200':    
           description: A JSON array of weapons
           content:
             application/json:
@@ -170,6 +200,8 @@ paths:
                 $ref: '#/components/schemas/Weapon'
     post:
       summary: Creates a new weapon
+      tags:
+        - Weapons
       requestBody:
         description: Weapon payload
         required: true
@@ -190,6 +222,8 @@ paths:
   /weapons/{id}:
     put:
       summary: Updates an existing weapon
+      tags:
+        - Weapons
       parameters:
         - in: path
           name: id
@@ -221,6 +255,8 @@ paths:
 
     delete:
       summary: Deletes an existing weapon
+      tags:
+        - Weapons
       parameters:
         - in: path
           name: id
@@ -237,8 +273,10 @@ paths:
   /ghosts:
     get:
       summary: Returns a list of ghosts
+      tags:
+        - Ghosts
       responses:
-        '200':    # status code
+        '200':    
           description: A JSON array of ghosts
           content:
             application/json:
