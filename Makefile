@@ -6,7 +6,7 @@ up:
 down:
 	docker-compose -f ./build/docker-compose.yaml down
 
-test: up
+test:
 	docker exec app go run cmd/migrations/migrate_test_db.go
 	docker exec app go test ./pkg/...
 
