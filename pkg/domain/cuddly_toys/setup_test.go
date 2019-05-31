@@ -6,13 +6,13 @@ import (
 )
 
 var dbConnection *gorm.DB
-func setupTestcase()  {
+
+func setupTestcase() {
 	dbConnection = connection.MakeTestConnection()
 	dbConnection = dbConnection.Begin()
 }
 
-func teardownTestcase()  {
+func teardownTestcase() {
 	dbConnection = dbConnection.Rollback()
 	dbConnection.Close()
 }
-

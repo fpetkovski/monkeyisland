@@ -7,7 +7,6 @@ import (
 	"os"
 )
 
-
 // Instantiates a connection using the database parameters passed in the environment
 func MakeDefaultConnection() *gorm.DB {
 	return makeConnection(

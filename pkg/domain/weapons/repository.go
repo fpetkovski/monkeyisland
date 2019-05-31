@@ -14,8 +14,8 @@ func NewRepository(db *gorm.DB) Repository {
 	}
 }
 
-func (repo Repository) GetById (id uint64) *Weapon {
-	weapon := new (Weapon)
+func (repo Repository) GetById(id uint64) *Weapon {
+	weapon := new(Weapon)
 	err := repo.DB.Find(weapon, id).Error
 	if err != nil {
 		return nil

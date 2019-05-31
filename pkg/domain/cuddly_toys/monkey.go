@@ -10,7 +10,7 @@ func NewMonkey(name string, powerLevel int) *Monkey {
 	return &Monkey{
 		CuddlyToy: CuddlyToy{
 			Toy: domain.Toy{
-				Name:name,
+				Name: name,
 			},
 			EnergyLevel: powerLevel,
 		},

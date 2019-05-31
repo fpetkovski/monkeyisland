@@ -78,7 +78,6 @@ func TestRepository_UpdateDog(t *testing.T) {
 	assert.Equal(t, dbDog.EnergyLevel, 55, "Retrieved energy level does not match stored energy level")
 }
 
-
 func TestRepository_DeleteDog(t *testing.T) {
 	setupTestcase()
 	defer teardownTestcase()

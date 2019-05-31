@@ -8,13 +8,13 @@ import (
 )
 
 type Handler struct {
-	dogsRepository cuddly_toys.DogsRepository
+	dogsRepository    cuddly_toys.DogsRepository
 	monkeysRepository cuddly_toys.MonkeysRepository
 }
 
 func NewCuddlyToysHandler(db *gorm.DB) Handler {
 	return Handler{
-		dogsRepository: cuddly_toys.NewDogsRepository(db),
+		dogsRepository:    cuddly_toys.NewDogsRepository(db),
 		monkeysRepository: cuddly_toys.NewMonkeysRepository(db),
 	}
 }

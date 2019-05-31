@@ -8,12 +8,13 @@ import (
 )
 
 var dbConnection *gorm.DB
-func setupTestcase()  {
+
+func setupTestcase() {
 	dbConnection = connection.MakeTestConnection()
 	dbConnection = dbConnection.Begin()
 }
 
-func teardownTestcase()  {
+func teardownTestcase() {
 	dbConnection = dbConnection.Rollback()
 	dbConnection.Close()
 }
@@ -90,7 +91,6 @@ func TestRepository_UpdateWeapon(t *testing.T) {
 	assert.Equal(t, dbWeapon.Name, "Updated weapon name", "Retrieved name does not match stored name")
 	assert.Equal(t, dbWeapon.PowerLevel, 55, "Retrieved power level does not match stored power level")
 }
-
 
 func TestRepository_DeleteWeapon(t *testing.T) {
 	setupTestcase()

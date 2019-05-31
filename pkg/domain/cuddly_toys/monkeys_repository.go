@@ -14,8 +14,8 @@ func NewMonkeysRepository(db *gorm.DB) MonkeysRepository {
 	}
 }
 
-func (repo MonkeysRepository) GetById (id uint64) *Monkey {
-	monkey := new (Monkey)
+func (repo MonkeysRepository) GetById(id uint64) *Monkey {
+	monkey := new(Monkey)
 	err := repo.DB.Find(monkey, id).Error
 	if err != nil {
 		return nil
