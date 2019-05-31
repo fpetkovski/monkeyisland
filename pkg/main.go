@@ -1,9 +1,10 @@
 package main
 
 import (
-	"fpetkovski/monkeyisland/pkg/http/handlers/dogs"
+	"fpetkovski/monkeyisland/pkg/http/handlers/cuddly_toys"
+	"fpetkovski/monkeyisland/pkg/http/handlers/cuddly_toys/dogs"
+	"fpetkovski/monkeyisland/pkg/http/handlers/cuddly_toys/monkeys"
 	"fpetkovski/monkeyisland/pkg/http/handlers/ghosts"
-	"fpetkovski/monkeyisland/pkg/http/handlers/monkeys"
 	"fpetkovski/monkeyisland/pkg/http/handlers/weapons"
 	"fpetkovski/monkeyisland/pkg/http/middleware"
 	"fpetkovski/monkeyisland/pkg/infrastructure/connection"
@@ -25,9 +26,10 @@ func main() {
 		middleware.PanicRecovery,
 	)
 
-	attachWeaponRoutes(dbConnection, apiRouter)
+	attachCuddlyToysRoutes(dbConnection, apiRouter)
 	attachDogRoutes(dbConnection, apiRouter)
 	attachMonkeyRoutes(dbConnection, apiRouter)
+	attachWeaponRoutes(dbConnection, apiRouter)
 	attachGhostRoutes(apiRouter)
 
 	c := makeCORSHandler()
@@ -50,22 +52,27 @@ func attachGhostRoutes(apiRouter *mux.Router) {
 	apiRouter.HandleFunc("/ghosts", ghostsHandler.GetGhosts).Methods("GET")
 }
 
+func attachCuddlyToysRoutes(dbConnection *gorm.DB, apiRouter *mux.Router) {
+	cuddlyToysHandler := cuddly_toys.NewCuddlyToysHandler(dbConnection)
+	apiRouter.HandleFunc("/cuddly_toys", cuddlyToysHandler.GetCuddlyToys).Methods("GET")
+}
+
 func attachMonkeyRoutes(dbConnection *gorm.DB, apiRouter *mux.Router) {
 	monkeysValidator := middleware.MakeValidator(monkeys.ValidationRules())
 	monkeysHandler := monkeys.NewMonkeysHandler(dbConnection)
-	apiRouter.HandleFunc("/monkeys", monkeysHandler.GetMonkeys).Methods("GET")
-	apiRouter.HandleFunc("/monkeys", monkeysValidator(monkeysHandler.CreateMonkey)).Methods("POST")
-	apiRouter.HandleFunc("/monkeys/{id:[0-9]+}", monkeysValidator(monkeysHandler.UpdateMonkey)).Methods("PUT")
-	apiRouter.HandleFunc("/monkeys/{id:[0-9]+}", monkeysHandler.DeleteMonkey).Methods("DELETE")
+	apiRouter.HandleFunc("/cuddly_toys/monkeys", monkeysHandler.GetMonkeys).Methods("GET")
+	apiRouter.HandleFunc("/cuddly_toys/monkeys", monkeysValidator(monkeysHandler.CreateMonkey)).Methods("POST")
+	apiRouter.HandleFunc("/cuddly_toys/monkeys/{id:[0-9]+}", monkeysValidator(monkeysHandler.UpdateMonkey)).Methods("PUT")
+	apiRouter.HandleFunc("/cuddly_toys/monkeys/{id:[0-9]+}", monkeysHandler.DeleteMonkey).Methods("DELETE")
 }
 
 func attachDogRoutes(dbConnection *gorm.DB, apiRouter *mux.Router) {
 	dogsValidator := middleware.MakeValidator(dogs.ValidationRules())
 	dogsHandler := dogs.NewDogsHandler(dbConnection)
-	apiRouter.HandleFunc("/dogs", dogsHandler.GetDogs).Methods("GET")
-	apiRouter.HandleFunc("/dogs", dogsValidator(dogsHandler.CreateDog)).Methods("POST")
-	apiRouter.HandleFunc("/dogs/{id:[0-9]+}", dogsValidator(dogsHandler.UpdateDog)).Methods("PUT")
-	apiRouter.HandleFunc("/dogs/{id:[0-9]+}", dogsHandler.DeleteDog).Methods("DELETE")
+	apiRouter.HandleFunc("/cuddly_toys/dogs", dogsHandler.GetDogs).Methods("GET")
+	apiRouter.HandleFunc("/cuddly_toys/dogs", dogsValidator(dogsHandler.CreateDog)).Methods("POST")
+	apiRouter.HandleFunc("/cuddly_toys/dogs/{id:[0-9]+}", dogsValidator(dogsHandler.UpdateDog)).Methods("PUT")
+	apiRouter.HandleFunc("/cuddly_toys/dogs/{id:[0-9]+}", dogsHandler.DeleteDog).Methods("DELETE")
 }
 
 func attachWeaponRoutes(dbConnection *gorm.DB, apiRouter *mux.Router) {

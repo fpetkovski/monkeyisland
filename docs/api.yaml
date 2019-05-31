@@ -6,6 +6,9 @@ servers:
   - url: http://localhost:8080/api
     description: Dev server
 tags:
+  - name: CuddlyToys
+    description: cuddly toys
+
   - name: Dogs
     description: everything about dogs
 
@@ -18,7 +21,20 @@ tags:
   - name: Weapons
     description: weapon endpoints
 paths:
-  /dogs:
+  /cuddly_toys:
+    get:
+      summary: Returns a list of cuddly toys
+      tags:
+        - CuddlyToys
+      responses:
+        '200':
+          description: A JSON array of cuddly toys
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CuddlyToy'
+
+  /cuddly_toys/dogs:
     get:
       summary: Returns a list of dogs
       tags:
@@ -51,7 +67,7 @@ paths:
         '422':
           description: Invalid payload
 
-  /dogs/{id}:
+  /cuddly_toys/dogs/{id}:
     put:
       summary: Updates an existing dog
       tags:
@@ -102,7 +118,7 @@ paths:
         '404':
           description: Dog not found
           
-  /monkeys:
+  /cuddly_toys/monkeys:
     get:
       summary: Returns a list of monkeys
       tags:
@@ -135,7 +151,7 @@ paths:
         '422':
           description: Invalid payload
 
-  /monkeys/{id}:
+  /cuddly_toys/monkeys/{id}:
     put:
       summary: Updates an existing monkey
       tags:
@@ -285,6 +301,15 @@ paths:
 
 components:
   schemas:
+    CuddlyToy:
+      type: object
+      properties:
+        ID:
+          type: integer
+        name:
+          type: string
+        energy_level:
+          type: integer
     Dog:
       type: object
       properties:
