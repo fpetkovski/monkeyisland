@@ -22,6 +22,6 @@ Swagger-based documentation is available on http://localhost:8082
 
 ### Notable libraries used
 * gorilla/mux
-* gorm
+* jinzhu/gorm
 * testify/assert
 
